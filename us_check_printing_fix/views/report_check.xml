@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ckus_check" inherit_id="l10n_us_check_printing.ckus_check">
+        <!-- Replace the entire check template content -->
+        <xpath expr="//div[@class='ckus_check']" position="replace">
+            <div class="ckus_check">
+                <t t-if="page['state'] == 'cancelled'">
+                    <div class="o-watermark">VOID</div>
+                </t>
+                <div class="sequence_number" t-if="page['sequence_number'] and page['manual_sequencing']" t-out="page['sequence_number']"/>
+                <div class="ckus_date" t-out="page['date']"/>
+                <div class="ckus_payee_name" t-out="page['partner_name']"/>
+                <div class="ckus_amount">
+                    <t t-out="page['amount'].replace(o.currency_id.symbol, '')"/>
+                </div>
+                <div class="ckus_amount_in_word" t-out="page['amount_in_word']"/>
+                <br/>
+                <div class="ckus_payee_addr" style="font-size: 14px; margin-top: 10px;">
+                    <t t-set="partner" t-value="page['partner_id']"/>
+                    <t t-if="partner">
+                        <t t-esc="partner.name"/><br/>
+                        <t t-if="partner.street"><t t-esc="partner.street"/><br/></t>
+                        <t t-if="partner.street2"><t t-esc="partner.street2"/><br/></t>
+                        <t t-if="partner.city">
+                            <t t-esc="partner.city"/>
+                            <t t-if="partner.state_id">, <t t-esc="partner.state_id.code"/></t>
+                            <t t-if="partner.zip"> <t t-esc="partner.zip"/></t><br/>
+                        </t>
+                        <t t-if="partner.country_id and partner.country_id.name != 'United States'">
+                            <t t-esc="partner.country_id.name"/><br/>
+                        </t>
+                    </t>
+                </div>
+                <div class="ckus_memo">
+                    <t t-if="page['partner_id'].x_account_number">
+                        Account #: <t t-esc="page['partner_id'].x_account_number"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
