@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_return_picking_form_max_qty" model="ir.ui.view">
+        <field name="name">stock.return.picking.form.max.qty</field>
+        <field name="model">stock.return.picking</field>
+        <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Replace footer to add our buttons -->
+            <xpath expr="//footer" position="replace">
+                <footer>
+                    <button name="action_return_max_quantities" 
+                            string="Return Max Quantities" 
+                            type="object" 
+                            class="btn-success"
+                            data-hotkey="m"/>
+                    <button name="action_create_returns" 
+                            string="Return Inputted Quantities" 
+                            type="object" 
+                            class="btn-primary"
+                            data-hotkey="q"/>
+                    <button string="Cancel" 
+                            class="btn-secondary" 
+                            special="cancel" 
+                            data-hotkey="x"/>
+                </footer>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>
