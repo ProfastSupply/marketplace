@@ -1,14 +1,15 @@
-# Stock Return Max Quantities
+# Stock Return Improvement w/ Return Max Quantity Button
 
+Improved Pop-up to Display Quantities on Transfer
 One-click return all delivered quantities.
 
 ## The Problem
-
+If the stock transfer has lines that run off the page you are unable to scroll down to see the quantities that need to be returned.
 When returning an entire delivery, you have to manually set each line's quantity to the maximum. This is tedious for deliveries with many lines.
 
 ## The Solution
 
-This module adds a "Return Max Quantities" button that:
+This module adds a scrollable pop-up that shows the quantity delivered for each line item and a "Return Max Quantities" button that:
 1. Sets all line quantities to their maximum (delivered qty)
 2. Processes the return immediately
 3. Opens the new return picking
@@ -34,7 +35,8 @@ This module adds a "Return Max Quantities" button that:
 
 1. Go to a completed delivery (Inventory → Deliveries)
 2. Click "Return" button
-3. In the return wizard, click "Return Max Quantities"
+3a. In the return wizard, enter a quantity and click "Return Inputted Quantities" or
+3b. Click "Return Max Quantities" to return the entire delivery
 4. The return is created and opened automatically
 
 ## License
