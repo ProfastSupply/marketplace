@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Stock Picking & Invoice Improvements',
+    'name': 'Transfer & Invoice Improvements',
     'version': '18.0.1.0.0',
     'category': 'Inventory/Delivery',
     'summary': 'Create Invoice from delivery, show SO/PO links, regenerate invoice lines',
     'description': """
-Stock Picking & Invoice Improvements
+Transfer & Invoice Improvements
 ====================================
 
 Enhances delivery orders and invoices with useful workflow features.
