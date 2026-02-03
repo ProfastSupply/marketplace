@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document_return" inherit_id="stock.report_delivery_document">
+        
+        <!-- Replace the origin div to show "Return of" for returns -->
+        <xpath expr="//div[@name='div_origin']" position="replace">
+            <div t-if="o.origin and not o.return_id" class="col-6" name="div_origin">
+                <strong>Order</strong>
+                <div t-field="o.origin" class="m-0"/>
+            </div>
+            <div t-if="o.sale_id and o.return_id" class="col-6" name="div_origin">
+                <strong>Return of</strong>
+                <div t-field="o.sale_id.name" class="m-0"/>
+            </div>
+        </xpath>
+        
+    </template>
+</odoo>
