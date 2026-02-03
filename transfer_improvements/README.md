@@ -1,4 +1,4 @@
-# Stock Picking & Invoice Improvements
+# Transfer & Invoice Improvements
 
 Enhances delivery orders and invoices with useful workflow features.
 
