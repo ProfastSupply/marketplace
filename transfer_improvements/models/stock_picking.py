@@ -67,17 +67,19 @@ class StockPicking(models.Model):
                 picking.x_po_origin = po.id
 
     def write(self, vals):
-        """Compute PO origin on save if needed."""
         res = super().write(vals)
-        
-        # Only compute if relevant fields changed or on state change to done
-        if 'state' in vals or 'group_id' in vals:
-            pickings_to_compute = self.filtered(
-                lambda p: p.state == 'done' and not p.sale_id and not p.x_po_origin and p.group_id
-            )
-            pickings_to_compute._compute_po_origin()
-        
+
+        pickings_to_compute = self.filtered(
+            lambda p:
+                not p.x_po_origin
+                and not p.sale_id
+                and p.group_id
+        )
+
+        pickings_to_compute._compute_po_origin()
+
         return res
+
 
     @api.model_create_multi
     def create(self, vals_list):
