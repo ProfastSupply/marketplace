@@ -6,19 +6,34 @@
         <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
         <field name="arch" type="xml">
             
-            <!-- Make move_quantity visible and rename column -->
+            <!-- Make move_quantity visible with label -->
             <xpath expr="//field[@name='product_return_moves']//field[@name='move_quantity']" position="attributes">
-                <attribute name="column_invisible">0</attribute>
+                <attribute name="column_invisible"/>
                 <attribute name="string">Qty Delivered</attribute>
             </xpath>
             
-            <!-- Add Return Max Quantities button before the existing Return button -->
-            <xpath expr="//footer/button[@name='action_create_returns']" position="before">
-                <button name="action_return_max_quantities" 
-                        string="Return Max Quantities" 
-                        type="object" 
-                        class="btn-success"
-                        data-hotkey="m"/>
+            <!-- Replace entire footer -->
+            <xpath expr="//footer" position="replace">
+                <group style="width: 100%;">
+                    <group>
+                        <button name="action_return_max_quantities" 
+                                string="Return Max Quantities" 
+                                type="object" 
+                                class="btn-success"/>
+                    </group>
+                    <group style="text-align: right;">
+                        <button name="action_create_returns" 
+                                string="Return Inputted Quantities" 
+                                type="object" 
+                                class="btn-primary"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Cancel" 
+                            class="btn-secondary" 
+                            special="cancel" 
+                            data-hotkey="x"/>
+                </footer>
             </xpath>
             
         </field>
