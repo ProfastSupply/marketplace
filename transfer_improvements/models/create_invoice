@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, _
+from odoo.exceptions import UserError
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    def action_create_invoice(self):
+        """Create invoice from the related sale order."""
+        self.ensure_one()
+        
+        # Get the related sale order
+        sale_order = self.sale_id
+        if not sale_order:
+            raise UserError(_("No sales order linked to this delivery."))
+        
+        # Check if there's anything to invoice
+        # Uses Odoo's built-in logic to determine invoiceable quantities
+        if sale_order.invoice_status != 'to invoice':
+            raise UserError(_("Nothing to invoice on this sales order."))
+        
+        # Create the invoice using Odoo's standard method
+        invoice = sale_order._create_invoices()
+        
+        if not invoice:
+            raise UserError(_("Could not create invoice."))
+        
+        # Open the created invoice
+        return {
+            'name': _('Customer Invoice'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'res_id': invoice.id,
+            'target': 'current',
+        }
