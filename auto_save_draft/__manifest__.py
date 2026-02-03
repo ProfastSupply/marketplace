@@ -32,7 +32,7 @@
             'auto_save_draft/static/src/js/auto_save_form_controller.js',
         ],
     },
-    'images': ['static/description/banner(1).png'],
+    'images': ['static/description/banner.png'],
     'installable': True,
     'application': False,
     'auto_install': False,
