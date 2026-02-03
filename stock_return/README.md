@@ -35,9 +35,9 @@ This module adds a scrollable pop-up that shows the quantity delivered for each 
 
 1. Go to a completed delivery (Inventory → Deliveries)
 2. Click "Return" button
-3a. In the return wizard, enter a quantity and click "Return Inputted Quantities" or
-3b. Click "Return Max Quantities" to return the entire delivery
-4. The return is created and opened automatically
+3. In the return wizard, enter a quantity and click "Return Inputted Quantities" or
+4. Click "Return Max Quantities" to return the entire delivery
+5. The return is created and opened automatically
 
 ## License
 
