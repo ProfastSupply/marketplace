@@ -13,6 +13,50 @@ class StockPicking(models.Model):
         readonly=True,
         copy=False,
     )
+    
+    x_notes = fields.Text(
+        string='Notes',
+    )
+    
+    x_transfer_summary = fields.Text(
+        string='Transfer Summary',
+        compute='_compute_transfer_summary',
+    )
+
+    @api.depends('move_ids_without_package', 'move_ids_without_package.quantity', 
+                 'move_ids_without_package.product_uom_qty', 'state')
+    def _compute_transfer_summary(self):
+        for record in self:
+            full = 0
+            partial = 0
+            not_transferred = 0
+            line_count = 0
+            
+            for line in record.move_ids_without_package:
+                line += 1
+                if line.quantity >= line.product_uom_qty and line.quantity != 0:
+                    full += 1
+                elif 0 < line.quantity < line.product_uom_qty:
+                    partial += 1
+                elif line.quantity == 0 and line.product_uom_qty > 0:
+                    not_transferred += 1
+            
+            if record.state == 'done':
+                # Past tense for completed transfers
+                record.x_transfer_summary = (
+                    f"Items Transferred:\n"
+                    f"Fully Transferred: {full}\n"
+                    f"Partially Transferred: {partial}\n"
+                    f"Not Transferred: {not_transferred}"
+                )
+            else:
+                # Future tense for pending transfers
+                record.x_transfer_summary = (
+                    f"Items to be Transferred: {line_count}\n"
+                    f"Fully Transferred: {full}\n"
+                    f"Partially Transferred: {partial}\n"
+                    f"Won't be Transferred: {not_transferred}"
+                )
 
     def action_create_invoice(self):
         """Create invoice from the related sale order."""
@@ -67,19 +111,17 @@ class StockPicking(models.Model):
                 picking.x_po_origin = po.id
 
     def write(self, vals):
+        """Compute PO origin on save if needed."""
         res = super().write(vals)
-
-        pickings_to_compute = self.filtered(
-            lambda p:
-                not p.x_po_origin
-                and not p.sale_id
-                and p.group_id
-        )
-
-        pickings_to_compute._compute_po_origin()
-
+        
+        # Only compute if relevant fields changed or on state change to done
+        if 'state' in vals or 'group_id' in vals:
+            pickings_to_compute = self.filtered(
+                lambda p: p.state == 'done' and not p.sale_id and not p.x_po_origin and p.group_id
+            )
+            pickings_to_compute._compute_po_origin()
+        
         return res
-
 
     @api.model_create_multi
     def create(self, vals_list):
