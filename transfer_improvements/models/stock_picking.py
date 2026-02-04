@@ -33,7 +33,7 @@ class StockPicking(models.Model):
             line_count = 0
             
             for line in record.move_ids_without_package:
-                line += 1
+                line_count += 1
                 if line.quantity >= line.product_uom_qty and line.quantity != 0:
                     full += 1
                 elif 0 < line.quantity < line.product_uom_qty:
