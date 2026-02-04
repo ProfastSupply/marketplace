@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 
+        Country IDs:
+        233 = United States
+        38 = Canada  
+        156 = Mexico
+    -->
+    <record id="view_partner_form_north_america_default" model="ir.ui.view">
+        <field name="name">res.partner.form.north.america.default</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Set state_id to show states for US, Canada, Mexico -->
+            <field name="state_id" position="attributes">
+                <attribute name="domain">[('country_id', 'in', [233, 38, 156])]</attribute>
+            </field>
+            
+            <!-- Set country_id to default to US and only show US/Canada/Mexico -->
+            <field name="country_id" position="attributes">
+                <attribute name="context">{'default_country_id': 233}</attribute>
+                <attribute name="domain">[('id', 'in', [233, 38, 156])]</attribute>
+            </field>
+            
+        </field>
+    </record>
+</odoo>
