@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_us_default" model="ir.ui.view">
+        <field name="name">res.partner.form.us.default</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Set state_id to only show US states (country_id 233 = United States) -->
+            <field name="state_id" position="attributes">
+                <attribute name="context">{'country_id': 233}</attribute>
+            </field>
+            
+            <!-- Set country_id to default to US and only show US -->
+            <field name="country_id" position="attributes">
+                <attribute name="context">{'default_country_id': 233}</attribute>
+                <attribute name="domain">[('id', '=', 233)]</attribute>
+            </field>
+            
+        </field>
+    </record>
+</odoo>
