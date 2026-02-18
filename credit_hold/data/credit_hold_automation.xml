@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="credit_hold_activity_summary_automation" model="base.automation">
+        <field name="name">Credit Hold: Set Approval Activity Summary</field>
+        <field name="model_id" ref="mail.model_mail_activity"/>
+        <field name="trigger">on_create</field>
+        <field name="filter_domain">[('res_model', '=', 'sale.order'), ('activity_category', '=', 'grant_approval'), ('summary', '=', False)]</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="credit_hold_activity_summary_action" model="ir.actions.server">
+        <field name="name">Credit Hold: Fix Approval Activity Summary</field>
+        <field name="model_id" ref="mail.model_mail_activity"/>
+        <field name="state">code</field>
+        <field name="usage">base_automation</field>
+        <field name="base_automation_id" ref="credit_hold_activity_summary_automation"/>
+        <field name="code">
+records.write({'summary': 'Credit Limit Met -- Sales Order Approval Required'})
+        </field>
+    </record>
+
+</odoo>

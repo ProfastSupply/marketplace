@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_credit_hold" model="ir.ui.view">
+        <field name="name">sale.order.form.credit.hold</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+
+                <!-- Blue: customer is on hold, no approval activity yet -->
+                <div class="alert alert-info d-flex align-items-center mb-0 rounded-0"
+                     invisible="not credit_hold_blocked or credit_hold_pending or state not in ('draft', 'sent')">
+                    <i class="fa fa-info-circle fa-lg me-3"/>
+                    <div>
+                        <strong>This customer has a credit hold on their account.</strong>
+                        You may continue building this order. When you click
+                        <strong>Confirm</strong>, it will be sent for approval
+                        before proceeding.
+                    </div>
+                </div>
+
+                <!-- Yellow: approval activity exists, waiting on approver -->
+                <div class="alert alert-warning d-flex align-items-center mb-0 rounded-0"
+                     invisible="not credit_hold_pending">
+                    <i class="fa fa-clock-o fa-lg me-3"/>
+                    <div>
+                        <strong>Awaiting Approval</strong> -- This order has been
+                        submitted and is waiting for a credit hold approver to
+                        review it before it can be confirmed.
+                    </div>
+                </div>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_credit_hold" model="ir.ui.view">
+        <field name="name">res.partner.form.credit.hold</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!--
+                Inject our Credit Management group directly before the
+                "Invoice sending" field, which sits inside the
+                "Customer Invoices" horizontal separator in the
+                Sales & Purchase tab.
+            -->
+            <xpath expr="//field[@name='invoice_sending_method']" position="before">
+                <group string="Credit Management" name="group_credit_management">
+                    <field name="x_account_hold"/>
+                    <field name="x_credit_limit"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
