@@ -17,37 +17,31 @@
   <div style="display:flex;flex-wrap:wrap;gap:16px;max-width:900px;margin:0 auto;">
 
     <div style="flex:1 1 220px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 18px;border-left:4px solid #3b82f6;">
-      <div style="font-size:24px;margin-bottom:10px;">📊</div>
       <h3 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Invoice-Level Tracking</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">See cost and profit on every customer invoice and credit note.</p>
     </div>
 
     <div style="flex:1 1 220px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 18px;border-left:4px solid #3b82f6;">
-      <div style="font-size:24px;margin-bottom:10px;">👤</div>
       <h3 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Partner Analytics</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Total lifetime profit and average profit per sale tracked on every customer record.</p>
     </div>
 
     <div style="flex:1 1 220px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 18px;border-left:4px solid #3b82f6;">
-      <div style="font-size:24px;margin-bottom:10px;">💰</div>
       <h3 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Real-time Updates</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Recent invoices update automatically when lines change. No manual calculation needed.</p>
     </div>
 
     <div style="flex:1 1 220px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 18px;border-left:4px solid #3b82f6;">
-      <div style="font-size:24px;margin-bottom:10px;">🔒</div>
       <h3 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Historical Freeze</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Invoices older than 7 days are frozen. Product cost changes won't affect historical data.</p>
     </div>
 
     <div style="flex:1 1 220px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 18px;border-left:4px solid #3b82f6;">
-      <div style="font-size:24px;margin-bottom:10px;">⚡</div>
       <h3 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">One-Time Compute</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">All historical invoices compute once on install. After that, only recent invoices recalculate.</p>
     </div>
 
     <div style="flex:1 1 220px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 18px;border-left:4px solid #3b82f6;">
-      <div style="font-size:24px;margin-bottom:10px;">🔐</div>
       <h3 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Admin-Only Visibility</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">All fields require Billing Administrator role. Keep sensitive margin data private.</p>
     </div>
@@ -99,13 +93,11 @@
   <div style="max-width:720px;margin:0 auto;display:flex;gap:20px;">
     
     <div style="flex:1;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:24px;">
-      <div style="font-size:28px;margin-bottom:12px;text-align:center;">💵</div>
       <h3 style="font-size:15px;font-weight:700;color:#1a1a2e;margin:0 0 8px;text-align:center;">Total Profit</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Lifetime net profit from all posted invoices and credit notes. Shows the true value of each customer relationship over time.</p>
     </div>
     
     <div style="flex:1;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:24px;">
-      <div style="font-size:28px;margin-bottom:12px;text-align:center;">📈</div>
       <h3 style="font-size:15px;font-weight:700;color:#1a1a2e;margin:0 0 8px;text-align:center;">Avg Per Sale</h3>
       <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Average profit per invoice. <strong>Excludes credit notes</strong> from the calculation to avoid artificially lowering the average. Shows typical deal profitability.</p>
     </div>
@@ -117,22 +109,22 @@
 </div>
 
 <!-- TECH DETAILS -->
-<div style="padding:48px 40px;background:#f9fafb;">
+<div style="padding:48px 40px;background:#fff;">
   <div style="text-align:center;margin-bottom:28px;">
     <h2 style="font-size:22px;font-weight:800;color:#1a1a2e;margin:0 0 6px;">Technical Highlights</h2>
   </div>
   <div style="max-width:680px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:24px;">
     <div style="margin-bottom:18px;">
       <h4 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Stored Computed Fields</h4>
-      <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Uses <code style="background:#f1f5f9;padding:2px 6px;border-radius:3px;font-size:12px;color:#e11d48;">@api.depends()</code> to recalculate only when invoice lines, products, or costs change. No unnecessary processing.</p>
+      <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Uses computed fields to recalculate only when invoice lines, products, or costs change. No unnecessary processing.</p>
     </div>
     <div style="margin-bottom:18px;">
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">No Automations Required</h4>
-      <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Native Python computed fields replace clunky automation scripts. Cleaner, faster, more maintainable.</p>
+      <h4 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Product Price Caching</h4>
+      <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">On install, queries each unique product once and caches the price in memory. 100x faster than individual database queries per line item.</p>
     </div>
     <div>
-      <h4 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Recalculate Button</h4>
-      <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Admins can manually force recalculation if product costs are retroactively adjusted.</p>
+      <h4 style="font-size:14px;font-weight:700;color:#1a1a2e;margin:0 0 6px;">Bulk SQL Updates</h4>
+      <p style="font-size:13px;color:#5d6d7e;line-height:1.6;margin:0;">Uses raw SQL to update 500 invoices at once instead of individual ORM writes. Dramatically reduces installation time for large datasets.</p>
     </div>
   </div>
 </div>
