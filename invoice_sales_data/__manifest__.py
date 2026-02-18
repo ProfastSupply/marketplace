@@ -34,6 +34,10 @@ Applies to customer invoices (out_invoice) and credit notes (out_refund).
         'views/account_move_views.xml',
         'views/res_partner_views.xml',
     ],
+    'images': [
+        'static/description/banner.png',
+        'static/description/icon.png',
+    ],
     'post_init_hook': 'post_init_hook',
     'installable': True,
     'application': False,
