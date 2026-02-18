@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Partner Form View - Add Profitability Stats -->
+    <record id="view_partner_form_profitability" model="ir.ui.view">
+        <field name="name">res.partner.form.profitability</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Add profitability section in Sales & Purchase tab -->
+            <xpath expr="//page[@name='sales_purchases']" position="inside">
+                <group string="Sales Data" name="sales_data_group" 
+                       groups="account.group_account_manager">
+                    <group>
+                        <field name="total_profit" widget="monetary" 
+                               options="{'currency_field': 'currency_id'}"/>
+                        <field name="invoice_count_for_profit"/>
+                    </group>
+                    <group>
+                        <field name="avg_profit_per_sale" widget="monetary" 
+                               options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </group>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>
