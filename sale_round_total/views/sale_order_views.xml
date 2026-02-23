@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- No sale order view changes needed — rounding is applied automatically on confirmation. -->
+</odoo>
