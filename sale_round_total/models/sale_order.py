@@ -88,11 +88,24 @@ class SaleOrder(models.Model):
         for order in self:
             if not order.sale_rounding_applied:
                 continue
-            eligible = order.order_line.filtered(
+            
+            eligible_lines = order.order_line.filtered(
                 lambda l: not l.display_type
+                and not l.is_delivery
+                and l.product_id.type != 'service'
                 and l.product_uom_qty
-                and l.price_unit_before_rounding
+                and l.price_unit > 0
             )
+
+            # If no physical/storable lines exist, fall back to service lines
+            # (service-only businesses have no other choice)
+            if not eligible_lines:
+                eligible_lines = order.order_line.filtered(
+                    lambda l: not l.display_type
+                    and not l.is_delivery
+                    and l.product_uom_qty
+                    and l.price_unit > 0
+                )
             for line in eligible:
                 line.with_context(rounding_in_progress=True).write({
                     'price_unit': line.price_unit_before_rounding,
@@ -123,11 +136,26 @@ class SaleOrder(models.Model):
                 continue
 
             eligible_lines = order.order_line.filtered(
-                lambda l: not l.display_type and l.product_uom_qty
+                lambda l: not l.display_type
+                and not l.is_delivery
+                and l.product_id.type != 'service'
+                and l.product_uom_qty
+                and l.price_unit > 0
             )
+
+            # If no physical/storable lines exist, fall back to service lines
+            # (service-only businesses have no other choice)
+            if not eligible_lines:
+                eligible_lines = order.order_line.filtered(
+                    lambda l: not l.display_type
+                    and not l.is_delivery
+                    and l.product_uom_qty
+                    and l.price_unit > 0
+                )
+
             if not eligible_lines:
                 _logger.warning('Sale order %s: no eligible lines.', order.name)
-                continue
+            continue
 
             target_lines = self._dominant_tax_group(eligible_lines)
             group_subtotal = sum(ln.price_subtotal for ln in target_lines)
