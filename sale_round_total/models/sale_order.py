@@ -88,24 +88,11 @@ class SaleOrder(models.Model):
         for order in self:
             if not order.sale_rounding_applied:
                 continue
-            
-            eligible_lines = order.order_line.filtered(
+            eligible = order.order_line.filtered(
                 lambda l: not l.display_type
-                and not l.is_delivery
-                and l.product_id.type != 'service'
                 and l.product_uom_qty
-                and l.price_unit > 0
+                and l.price_unit_before_rounding
             )
-
-            # If no physical/storable lines exist, fall back to service lines
-            # (service-only businesses have no other choice)
-            if not eligible_lines:
-                eligible_lines = order.order_line.filtered(
-                    lambda l: not l.display_type
-                    and not l.is_delivery
-                    and l.product_uom_qty
-                    and l.price_unit > 0
-                )
             for line in eligible:
                 line.with_context(rounding_in_progress=True).write({
                     'price_unit': line.price_unit_before_rounding,
@@ -136,26 +123,11 @@ class SaleOrder(models.Model):
                 continue
 
             eligible_lines = order.order_line.filtered(
-                lambda l: not l.display_type
-                and not l.is_delivery
-                and l.product_id.type != 'service'
-                and l.product_uom_qty
-                and l.price_unit > 0
+                lambda l: not l.display_type and l.product_uom_qty
             )
-
-            # If no physical/storable lines exist, fall back to service lines
-            # (service-only businesses have no other choice)
-            if not eligible_lines:
-                eligible_lines = order.order_line.filtered(
-                    lambda l: not l.display_type
-                    and not l.is_delivery
-                    and l.product_uom_qty
-                    and l.price_unit > 0
-                )
-
             if not eligible_lines:
                 _logger.warning('Sale order %s: no eligible lines.', order.name)
-            continue
+                continue
 
             target_lines = self._dominant_tax_group(eligible_lines)
             group_subtotal = sum(ln.price_subtotal for ln in target_lines)
@@ -183,21 +155,37 @@ class SaleOrder(models.Model):
             # One recompute after all lines are written
             self._force_recompute(order)
 
-            # Correction loop — max 3 attempts for Odoo's per-line tax rounding residual
             fix_line = target_lines[0]
-            for attempt in range(3):
-                residual = target - order.amount_total
-                if math.isclose(residual, 0.0, abs_tol=0.005):
-                    break
-                fix_unit = (residual / (1.0 + group_tax_rate)) / fix_line.product_uom_qty
+
+            if n == 1 and fix_line.product_uom_qty and (1.0 + group_tax_rate) > 0:
+                # Single-line order: solve directly for the exact price_unit
+                # that produces the target total, bypassing iterative rounding.
+                # target = price_unit * qty * (1 + tax_rate)
+                # → price_unit = target / (qty * (1 + tax_rate))
+                exact_price = target / (fix_line.product_uom_qty * (1.0 + group_tax_rate))
                 fix_line.with_context(rounding_in_progress=True).write(
-                    {'price_unit': fix_line.price_unit + fix_unit}
+                    {'price_unit': exact_price}
                 )
                 self._force_recompute(order)
                 _logger.debug(
-                    'Sale order %s: correction #%d  residual=%.4f -> total=%.2f',
-                    order.name, attempt + 1, residual, order.amount_total,
+                    'Sale order %s: single-line direct solve  exact_price=%.6f -> total=%.2f',
+                    order.name, exact_price, order.amount_total,
                 )
+            else:
+                # Multi-line: iterative correction for per-line tax rounding residual
+                for attempt in range(3):
+                    residual = target - order.amount_total
+                    if math.isclose(residual, 0.0, abs_tol=0.005):
+                        break
+                    fix_unit = (residual / (1.0 + group_tax_rate)) / fix_line.product_uom_qty
+                    fix_line.with_context(rounding_in_progress=True).write(
+                        {'price_unit': fix_line.price_unit + fix_unit}
+                    )
+                    self._force_recompute(order)
+                    _logger.debug(
+                        'Sale order %s: correction #%d  residual=%.4f -> total=%.2f',
+                        order.name, attempt + 1, residual, order.amount_total,
+                    )
 
             final_residual = target - order.amount_total
             if not math.isclose(final_residual, 0.0, abs_tol=0.005):
